@@ -499,6 +499,7 @@ GameObject:
   - component: {fileID: 272475944}
   - component: {fileID: 272475943}
   - component: {fileID: 272475945}
+  - component: {fileID: 272475946}
   m_Layer: 0
   m_Name: GameBoard
   m_TagString: Untagged
@@ -514,7 +515,7 @@ Grid:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 272475942}
   m_Enabled: 1
-  m_CellSize: {x: 0.3, y: 0.3, z: 0}
+  m_CellSize: {x: 1, y: 1, z: 0}
   m_CellGap: {x: 0, y: 0, z: 0}
   m_CellLayout: 0
   m_CellSwizzle: 0
@@ -547,20 +548,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tetrominoes:
-  - _tetromino: 0
-    _tile: {fileID: 11400000, guid: 665c65745223a44e28bfe3641c7e0cd6, type: 2}
-  - _tetromino: 1
-    _tile: {fileID: 11400000, guid: 910880ed1300e4ca690f068458a57f06, type: 2}
-  - _tetromino: 2
-    _tile: {fileID: 11400000, guid: 1b71f2a32464e418180465da92c01031, type: 2}
-  - _tetromino: 3
-    _tile: {fileID: 11400000, guid: 84f4b4683e6ee43cc8ac172c2191c76c, type: 2}
-  - _tetromino: 4
-    _tile: {fileID: 11400000, guid: a6e111fda5c60466baa75e57901411fc, type: 2}
-  - _tetromino: 5
-    _tile: {fileID: 11400000, guid: 910880ed1300e4ca690f068458a57f06, type: 2}
-  - _tetromino: 6
-    _tile: {fileID: 11400000, guid: 665c65745223a44e28bfe3641c7e0cd6, type: 2}
+  - _tile: {fileID: 11400000, guid: 665c65745223a44e28bfe3641c7e0cd6, type: 2}
+    _tetromino: 0
+  - _tile: {fileID: 11400000, guid: 910880ed1300e4ca690f068458a57f06, type: 2}
+    _tetromino: 1
+  - _tile: {fileID: 11400000, guid: 1b71f2a32464e418180465da92c01031, type: 2}
+    _tetromino: 2
+  - _tile: {fileID: 11400000, guid: 84f4b4683e6ee43cc8ac172c2191c76c, type: 2}
+    _tetromino: 3
+  - _tile: {fileID: 11400000, guid: a6e111fda5c60466baa75e57901411fc, type: 2}
+    _tetromino: 4
+  - _tile: {fileID: 11400000, guid: 910880ed1300e4ca690f068458a57f06, type: 2}
+    _tetromino: 5
+  - _tile: {fileID: 11400000, guid: 665c65745223a44e28bfe3641c7e0cd6, type: 2}
+    _tetromino: 6
+  _activePiece: {fileID: 272475946}
+  _mainTileMap: {fileID: 1510389080}
+  _spawnPosition: {x: -1, y: 5, z: 0}
+  _boardSize: {x: 10, y: 15}
+--- !u!114 &272475946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 272475942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9258e21e9c6a449faf227d45cfe9200, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stepDelay: 1
+  _lockDelay: 0.5
 --- !u!1 &294962490
 GameObject:
   m_ObjectHideFlags: 0
@@ -1878,7 +1897,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 47.600006, y: -26.6}
+  m_AnchoredPosition: {x: 47.599976, y: -26.6}
   m_SizeDelta: {x: 51, y: 48}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1216242821
@@ -2224,7 +2243,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
-  m_Size: {x: 13.64, y: 20.91}
+  m_Size: {x: 10, y: 15}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -2238,8 +2257,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1403994872}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.45, z: 0}
-  m_LocalScale: {x: 0.29, y: 0.29, z: 1}
+  m_LocalPosition: {x: 0, y: -0.24, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -2391,7 +2410,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1510389077}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.735, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3131,7 +3150,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 12
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2

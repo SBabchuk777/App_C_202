@@ -18,13 +18,15 @@ namespace Enums.Game
     [System.Serializable]
     public struct TetrominoData
     {
-        public Tetromino _tetromino;
         public Tile _tile;
-        public Vector2[] _cells { get; private set; }
+        public Tetromino _tetromino;
+        public Vector2Int[] Cells { get; private set; }
+        public Vector2Int[,] WallKicks { get; private set; }
 
         public void Initialize()
         {
-            this._cells = GameData.Cells[this._tetromino];
+            Cells = GameData.Cells[_tetromino];
+            WallKicks = GameData.WallKicks[_tetromino];
         }
     }
 }
