@@ -564,7 +564,7 @@ MonoBehaviour:
     _tetromino: 6
   _activePiece: {fileID: 272475946}
   _mainTileMap: {fileID: 1510389080}
-  _spawnPosition: {x: -1, y: 5, z: 0}
+  _spawnPosition: {x: -1, y: 6, z: 0}
   _boardSize: {x: 10, y: 15}
 --- !u!114 &272475946
 MonoBehaviour:
