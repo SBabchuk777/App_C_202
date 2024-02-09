@@ -1,6 +1,9 @@
+using System.Linq;
+using Controllers.ActionControllers.Game;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using Enums.Game;
+using Unity.VisualScripting;
 
 namespace Controllers.Game
 {
@@ -18,8 +21,9 @@ namespace Controllers.Game
         private Vector2Int _boardSize;
 
         public Vector2Int BoardSize => _boardSize;
+        public bool CanDeleteBlock { get; set; }
 
-        public RectInt Bounds
+        private RectInt Bounds
         {
             get
             {
@@ -27,6 +31,8 @@ namespace Controllers.Game
                 return new RectInt(position, _boardSize);
             }
         }
+
+        private GameActionController _actionController;
 
         private void Awake()
         {
@@ -36,14 +42,57 @@ namespace Controllers.Game
             }
         }
 
-        private void Start()
+        private void Update()
         {
-            StartGame();
+            if (!Input.GetMouseButtonDown(0) || !CanDeleteBlock) 
+            {
+                return;
+            }
+
+            var worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+            var tilePosition = _mainTileMap.WorldToCell(worldPoint);
+            bool isDestroyed = false;
+
+            if (_mainTileMap.GetTile(tilePosition) != null)
+            {
+                if (_activePiece.Cells.All(cell => cell + _activePiece.Position != tilePosition))
+                {
+                    isDestroyed = true;
+                    _mainTileMap.SetTile(tilePosition, null);
+                }
+            }
+
+            _actionController.BlockHasBeenDestroy.Invoke(isDestroyed);
+                
+            CanDeleteBlock = false;
         }
 
-        public void StartGame()
+        public void StartGame(GameActionController actionController)
         {
+            _actionController = actionController;
+            
             SpawnPiece();
+        }
+
+        public void MoveItem(int direction)
+        {
+            Clear(_activePiece);
+            
+            Vector2Int directionVector = direction > 0 ? Vector2Int.right : Vector2Int.left;
+
+            _activePiece.Move(directionVector);
+            
+            Set(_activePiece);
+        }
+
+        public void RotateItem()
+        {
+            Clear(_activePiece);
+            
+            _activePiece.Rotate(1);
+            
+            Set(_activePiece);
         }
 
         public bool IsValidPosition(Piece piece, Vector3Int position)
@@ -92,7 +141,24 @@ namespace Controllers.Game
             TetrominoData data = _tetrominoes[randomIndex];
 
             _activePiece.Initialize(this, _spawnPosition, data);
+
+            if (IsValidPosition(_activePiece, _spawnPosition))
+            {
+                Set(_activePiece);
+            }
+            else
+            {
+                GameOver();
+            }
+        }
+        
+        public void ClearBoard()
+        {
             Set(_activePiece);
+            
+            _mainTileMap.ClearAllTiles();
+            
+            SpawnPiece();
         }
 
         public void ClearLines()
@@ -110,7 +176,7 @@ namespace Controllers.Game
             }
         }
         
-        public bool IsLineFull(int row)
+        private bool IsLineFull(int row)
         {
             RectInt bounds = Bounds;
 
@@ -126,7 +192,7 @@ namespace Controllers.Game
             return true;
         }
         
-        public void LineClear(int row)
+        private void LineClear(int row)
         {
             RectInt bounds = Bounds;
             
@@ -149,6 +215,11 @@ namespace Controllers.Game
 
                 row++;
             }
+        }
+
+        private void GameOver()
+        {
+            ClearBoard();
         }
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using Enums.Game;
 using Models.Game;
@@ -11,13 +10,13 @@ namespace Controllers.Game
         public TetrominoData Data { get; private set; }
         public Vector3Int[] Cells { get; private set; }
         public Vector3Int Position { get; private set; }
-        public int RotationIndex { get; private set; }
-
+        
         public float _stepDelay = 1f;
         public float _lockDelay = 0.5f;
 
         private float _stepTime;
         private float _lockTime;
+        private int _rotationIndex;
 
         private void Update()
         {
@@ -66,7 +65,7 @@ namespace Controllers.Game
             Board = board;
             Data = data;
             Position = position;
-            RotationIndex = 0;
+            _rotationIndex = 0;
 
             _stepTime = Time.time + _stepDelay;
             _lockTime = 0;
@@ -76,6 +75,37 @@ namespace Controllers.Game
             for (int i = 0; i < Cells.Length; i++)
             {
                 Cells[i] = (Vector3Int)data.Cells[i];
+            }
+        }
+        
+        public bool Move(Vector2Int translation)
+        {
+            Vector3Int newPosition = Position;
+            newPosition.x += translation.x;
+            newPosition.y += translation.y;
+
+            bool valid = Board.IsValidPosition(this,newPosition);
+
+            if (valid)
+            {
+                Position = newPosition;
+                _lockTime = 0;
+            }
+
+            return valid;
+        }
+        
+        public void Rotate(int direction)
+        {
+            int originalRotation = _rotationIndex;
+            _rotationIndex = Wrap(_rotationIndex + direction, 0, 4);
+            
+            ApplyRotationMatrix(direction);
+
+            if (!TestWallKicks(_rotationIndex, direction))
+            {
+                _rotationIndex = originalRotation;
+                ApplyRotationMatrix(-direction);
             }
         }
 
@@ -106,37 +136,6 @@ namespace Controllers.Game
             }
             
             Lock();
-        }
-
-        private bool Move(Vector2Int translation)
-        {
-            Vector3Int newPosition = Position;
-            newPosition.x += translation.x;
-            newPosition.y += translation.y;
-
-            bool valid = Board.IsValidPosition(this,newPosition);
-
-            if (valid)
-            {
-                Position = newPosition;
-                _lockTime = 0;
-            }
-
-            return valid;
-        }
-
-        private void Rotate(int direction)
-        {
-            int originalRotation = RotationIndex;
-            RotationIndex += Wrap(RotationIndex + direction, 0, 4);
-            
-            ApplyRotationMatrix(direction);
-
-            if (!TestWallKicks(RotationIndex, direction))
-            {
-                RotationIndex = originalRotation;
-                ApplyRotationMatrix(-direction);
-            }
         }
 
         private void ApplyRotationMatrix(int direction)
