@@ -17,6 +17,8 @@ namespace Controllers.Game
         [SerializeField] 
         private Vector2Int _boardSize;
 
+        public Vector2Int BoardSize => _boardSize;
+
         public RectInt Bounds
         {
             get
@@ -91,6 +93,62 @@ namespace Controllers.Game
 
             _activePiece.Initialize(this, _spawnPosition, data);
             Set(_activePiece);
+        }
+
+        public void ClearLines()
+        {
+            RectInt bounds = Bounds;
+            int row = bounds.yMin;
+            
+            while (row < bounds.yMax)
+            {
+                if (IsLineFull(row)) {
+                    LineClear(row);
+                } else {
+                    row++;
+                }
+            }
+        }
+        
+        public bool IsLineFull(int row)
+        {
+            RectInt bounds = Bounds;
+
+            for (int col = bounds.xMin; col < bounds.xMax; col++)
+            {
+                Vector3Int position = new Vector3Int(col, row, 0);
+                
+                if (!_mainTileMap.HasTile(position)) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+        
+        public void LineClear(int row)
+        {
+            RectInt bounds = Bounds;
+            
+            for (int col = bounds.xMin; col < bounds.xMax; col++)
+            {
+                Vector3Int position = new Vector3Int(col, row, 0);
+                _mainTileMap.SetTile(position, null);
+            }
+            
+            while (row < bounds.yMax)
+            {
+                for (int col = bounds.xMin; col < bounds.xMax; col++)
+                {
+                    Vector3Int position = new Vector3Int(col, row + 1, 0);
+                    TileBase above = _mainTileMap.GetTile(position);
+
+                    position = new Vector3Int(col, row, 0);
+                    _mainTileMap.SetTile(position, above);
+                }
+
+                row++;
+            }
         }
     }
 }

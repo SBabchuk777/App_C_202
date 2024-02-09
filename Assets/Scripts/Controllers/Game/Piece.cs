@@ -94,6 +94,7 @@ namespace Controllers.Game
         private void Lock()
         {
             Board.Set(this);
+            Board.ClearLines();
             Board.SpawnPiece();
         }
 
