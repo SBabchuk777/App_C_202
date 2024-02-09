@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 83279498}
   - component: {fileID: 83279500}
   - component: {fileID: 83279499}
+  - component: {fileID: 83279501}
   m_Layer: 5
   m_Name: PreviewItemsBody
   m_TagString: Untagged
@@ -200,6 +201,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 83279497}
   m_CullTransparentMesh: 1
+--- !u!114 &83279501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 83279497}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8aca5e3d46a1743fdb60032c80a10d9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _mainImage: {fileID: 2061735502}
+  _sprites:
+  - {fileID: 21300000, guid: 8ea0e4afae8f249dcbab69f1a0624fa1, type: 3}
+  - {fileID: 21300000, guid: 039d938cdcfa14bbba8e7ec7f43a0e71, type: 3}
+  - {fileID: 21300000, guid: 28c6acc615bec4e50b87439c6ce1dc04, type: 3}
+  - {fileID: 21300000, guid: 0516605ea91dd414391d3c2ed445a196, type: 3}
+  - {fileID: 21300000, guid: 0516605ea91dd414391d3c2ed445a196, type: 3}
+  - {fileID: 21300000, guid: a86ebfa7c7fe0427bab72996cc871f3c, type: 3}
+  - {fileID: 21300000, guid: a86ebfa7c7fe0427bab72996cc871f3c, type: 3}
 --- !u!1 &129643268
 GameObject:
   m_ObjectHideFlags: 0
@@ -580,19 +602,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tetrominoes:
-  - _tile: {fileID: 11400000, guid: 665c65745223a44e28bfe3641c7e0cd6, type: 2}
+  - _tile: {fileID: 11400000, guid: 84f4b4683e6ee43cc8ac172c2191c76c, type: 2}
     _tetromino: 0
-  - _tile: {fileID: 11400000, guid: 910880ed1300e4ca690f068458a57f06, type: 2}
+  - _tile: {fileID: 11400000, guid: 665c65745223a44e28bfe3641c7e0cd6, type: 2}
     _tetromino: 1
   - _tile: {fileID: 11400000, guid: 1b71f2a32464e418180465da92c01031, type: 2}
     _tetromino: 2
-  - _tile: {fileID: 11400000, guid: 84f4b4683e6ee43cc8ac172c2191c76c, type: 2}
+  - _tile: {fileID: 11400000, guid: a6e111fda5c60466baa75e57901411fc, type: 2}
     _tetromino: 3
   - _tile: {fileID: 11400000, guid: a6e111fda5c60466baa75e57901411fc, type: 2}
     _tetromino: 4
   - _tile: {fileID: 11400000, guid: 910880ed1300e4ca690f068458a57f06, type: 2}
     _tetromino: 5
-  - _tile: {fileID: 11400000, guid: 665c65745223a44e28bfe3641c7e0cd6, type: 2}
+  - _tile: {fileID: 11400000, guid: 910880ed1300e4ca690f068458a57f06, type: 2}
     _tetromino: 6
   _activePiece: {fileID: 272475946}
   _mainTileMap: {fileID: 1510389080}
@@ -2346,6 +2368,7 @@ MonoBehaviour:
   _rotateBtn: {fileID: 977960241}
   _clearBoardView: {fileID: 129643273}
   _deleteBlockView: {fileID: 1811133302}
+  _previewItemView: {fileID: 83279501}
 --- !u!1 &1495450338
 GameObject:
   m_ObjectHideFlags: 0

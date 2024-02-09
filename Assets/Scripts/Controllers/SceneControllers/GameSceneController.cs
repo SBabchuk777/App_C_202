@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 using Controllers.Game;
 using Controllers.ActionControllers.Game;
+
 using Models.Game;
 using Views.Game;
 
@@ -27,6 +28,8 @@ namespace Controllers.SceneControllers
         private BoosterView _clearBoardView;
         [SerializeField] 
         private BoosterView _deleteBlockView;
+        [SerializeField] 
+        private PreviewItemView _previewItemView;
 
         private GameModel _model;
         private GameActionController _actionController;
@@ -61,6 +64,7 @@ namespace Controllers.SceneControllers
             
             _clearBoardView.PressBtnAction += ClearBoard;
             _deleteBlockView.PressBtnAction += SetCanDeleteBlock;
+            _actionController.ChoseItem += SetPreviewItem;
         }
 
         protected override void Unsubscribe()
@@ -71,6 +75,7 @@ namespace Controllers.SceneControllers
             
             _clearBoardView.PressBtnAction -= ClearBoard;
             _deleteBlockView.PressBtnAction -= SetCanDeleteBlock;
+            _actionController.ChoseItem -= SetPreviewItem;
         }
 
         private void ClearBoard()
@@ -118,6 +123,11 @@ namespace Controllers.SceneControllers
         {
             _clearBoardView.SetCountText(base.ClearBoardBoosterCount);
             _deleteBlockView.SetCountText(base.DestroyBlockBoosterCount);
+        }
+
+        private void SetPreviewItem(int index)
+        {
+            _previewItemView.SetSprite(index);
         }
     }
 }

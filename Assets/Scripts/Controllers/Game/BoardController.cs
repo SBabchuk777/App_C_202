@@ -139,6 +139,8 @@ namespace Controllers.Game
         {
             int randomIndex = Random.Range(0, _tetrominoes.Length);
             TetrominoData data = _tetrominoes[randomIndex];
+            
+            _actionController.ChoseItem.Invoke(randomIndex);
 
             _activePiece.Initialize(this, _spawnPosition, data);
 
