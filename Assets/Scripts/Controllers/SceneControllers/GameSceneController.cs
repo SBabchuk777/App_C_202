@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 using Controllers.Game;
 using Controllers.ActionControllers.Game;
+using Models.Game;
 using Views.Game;
 
 namespace Controllers.SceneControllers
@@ -27,10 +28,13 @@ namespace Controllers.SceneControllers
         [SerializeField] 
         private BoosterView _deleteBlockView;
 
+        private GameModel _model;
         private GameActionController _actionController;
-        
+
         protected override void OnSceneEnable()
         {
+            SetBoosterCount();
+            CheckActiveBoosterBtns();
         }
 
         protected override void OnSceneStart()
@@ -46,6 +50,7 @@ namespace Controllers.SceneControllers
         protected override void Initialize()
         {
             _actionController = new GameActionController();
+            _model = new GameModel();
         }
 
         protected override void Subscribe()
@@ -71,6 +76,11 @@ namespace Controllers.SceneControllers
         private void ClearBoard()
         {
             _boardController.ClearBoard();
+
+            base.ClearBoardBoosterCount--;
+            
+            SetBoosterCount();
+            CheckActiveBoosterBtns();
         }
 
         private void SetCanDeleteBlock()
@@ -87,8 +97,27 @@ namespace Controllers.SceneControllers
             _actionController.BlockHasBeenDestroy -= UpdateCountDeleteBlockBooster;
             
             _deleteBlockView.SetInteractableBtn(true);
-            
-            Debug.Log("Block Has Been Deleted" + blockHasBeenDeleted);
+
+            if (!blockHasBeenDeleted)
+            {
+                return;
+            }
+
+            base.DestroyBlockBoosterCount--;
+            SetBoosterCount();
+            CheckActiveBoosterBtns();
+        }
+
+        private void CheckActiveBoosterBtns()
+        {
+            _clearBoardView.SetInteractableBtn(_model.IsActiveBoosterBtn(base.ClearBoardBoosterCount));
+            _deleteBlockView.SetInteractableBtn(_model.IsActiveBoosterBtn(base.DestroyBlockBoosterCount));
+        }
+
+        private void SetBoosterCount()
+        {
+            _clearBoardView.SetCountText(base.ClearBoardBoosterCount);
+            _deleteBlockView.SetCountText(base.DestroyBlockBoosterCount);
         }
     }
 }

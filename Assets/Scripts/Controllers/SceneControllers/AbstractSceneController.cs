@@ -1,14 +1,32 @@
 using UnityEngine;
+using Models;
 
 namespace Controllers.SceneControllers
 {
     public abstract class AbstractSceneController : MonoBehaviour
     {
+        protected int ClearBoardBoosterCount
+        {
+            get => _model.ClearBoardBoosterCount;
+            set => _model.ClearBoardBoosterCount = value;
+        }
+
+        protected int DestroyBlockBoosterCount
+        {
+            get => _model.DestroyBlockBoosterCount;
+            set => _model.DestroyBlockBoosterCount = value;
+        }
+
+
+        private MainModel _model;
+
         private void OnEnable()
         {
-            OnSceneEnable();
+            _model = new MainModel();
+            
             Initialize();
             Subscribe();
+            OnSceneEnable();
         }
 
         private void Start()
