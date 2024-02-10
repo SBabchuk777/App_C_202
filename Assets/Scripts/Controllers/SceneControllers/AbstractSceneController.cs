@@ -1,12 +1,18 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+
 using Models;
+using Models.Values;
 
 namespace Controllers.SceneControllers
 {
     public abstract class AbstractSceneController : MonoBehaviour
     {
+        [SerializeField] 
+        private Text _moneyCountText;
+        
         protected int ClearBoardBoosterCount
         {
             get => _model.ClearBoardBoosterCount;
@@ -18,8 +24,7 @@ namespace Controllers.SceneControllers
             get => _model.DestroyBlockBoosterCount;
             set => _model.DestroyBlockBoosterCount = value;
         }
-
-
+        
         private MainModel _model;
 
         private void OnEnable()
@@ -29,6 +34,7 @@ namespace Controllers.SceneControllers
             Initialize();
             Subscribe();
             OnSceneEnable();
+            UpdateMoneyCountText();
         }
 
         private void Start()
@@ -48,6 +54,16 @@ namespace Controllers.SceneControllers
         protected abstract void Initialize();
         protected abstract void Subscribe();
         protected abstract void Unsubscribe();
+
+        protected void UpdateMoneyCountText()
+        {
+            if (_moneyCountText == null)
+            {
+                return;
+            }
+
+            _moneyCountText.text = Wallet.MoneyCount.ToString();
+        }
 
         protected void LoadScene(string sceneName)
         {
