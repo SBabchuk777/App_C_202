@@ -43,6 +43,7 @@ namespace Controllers.SceneControllers
         protected override void Initialize()
         {
             _bonusModel = new BonusModel();
+            _menuModel = new MenuModel();
         }
 
         protected override void Subscribe()
@@ -61,6 +62,8 @@ namespace Controllers.SceneControllers
         {
             //base.SetClickClip();
             //base.TryPlaySound(_spinClip);
+            
+            _menuModel.SetLastDayOpenBonus();
 
             int angle = _bonusModel.GetAngle;
 
@@ -76,9 +79,7 @@ namespace Controllers.SceneControllers
             _wheelView.WheelEndRotationAction -= SetWheelState;
 
             int prize = _bonusModel.GetPrize;
-            
-            Debug.Log(prize);
-            
+
             //AudioClip clip = prize > 0 ? _winClip : _loseClip;
 
             //base.TryPlaySound(clip);

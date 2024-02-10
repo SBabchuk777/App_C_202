@@ -2412,6 +2412,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 410d528b68e4c4e929bff393897a3092, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _moneyCountText: {fileID: 625809925}
   _boardController: {fileID: 272475945}
   _leftMoveBtn: {fileID: 1289197578}
   _rightMoveBtn: {fileID: 896440895}
