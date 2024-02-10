@@ -22,6 +22,7 @@ namespace Controllers.Game
 
         public Vector2Int BoardSize => _boardSize;
         public bool CanDeleteBlock { get; set; }
+        public bool CanSpawnPiece => _canSpawnPiece;
 
         private RectInt Bounds
         {
@@ -33,6 +34,8 @@ namespace Controllers.Game
         }
 
         private GameActionController _actionController;
+        private bool _isFirstTime;
+        private bool _canSpawnPiece;
 
         private void Awake()
         {
@@ -71,6 +74,8 @@ namespace Controllers.Game
         public void StartGame(GameActionController actionController)
         {
             _actionController = actionController;
+            _isFirstTime = true;
+            _canSpawnPiece = true;
             
             SpawnPiece();
         }
@@ -119,6 +124,11 @@ namespace Controllers.Game
         
         public void Set(Piece piece)
         {
+            if (!_canSpawnPiece)
+            {
+                return;
+            }
+
             foreach (var pieceCell in piece.Cells)
             {
                 Vector3Int tilePos = pieceCell + piece.Position;
@@ -137,10 +147,22 @@ namespace Controllers.Game
         
         public void SpawnPiece()
         {
+            if (!_canSpawnPiece)
+            {
+                return;
+            }
+
             int randomIndex = Random.Range(0, _tetrominoes.Length);
             TetrominoData data = _tetrominoes[randomIndex];
             
-            _actionController.ChoseItem.Invoke(randomIndex);
+            int countBlocks = _isFirstTime ? 3 : 2;
+
+            if (_isFirstTime)
+            {
+                _isFirstTime = false;
+            }
+
+            _actionController.ChoseItem.Invoke(randomIndex, countBlocks);
 
             _activePiece.Initialize(this, _spawnPosition, data);
 
@@ -157,9 +179,14 @@ namespace Controllers.Game
         public void ClearBoard()
         {
             Set(_activePiece);
-            
+
             _mainTileMap.ClearAllTiles();
-            
+
+            if (!_canSpawnPiece)
+            {
+                return;
+            }
+
             SpawnPiece();
         }
 
@@ -172,6 +199,7 @@ namespace Controllers.Game
             {
                 if (IsLineFull(row)) {
                     LineClear(row);
+                    _actionController.LineHasBeenDestroy.Invoke();
                 } else {
                     row++;
                 }
@@ -221,7 +249,11 @@ namespace Controllers.Game
 
         private void GameOver()
         {
+            _canSpawnPiece = false;
+
             ClearBoard();
+            
+            _actionController.GameOver.Invoke();
         }
     }
 }

@@ -6,6 +6,8 @@ using Controllers.ActionControllers.Game;
 
 using Models.Game;
 using Views.Game;
+using Names;
+using Unity.VisualScripting;
 
 namespace Controllers.SceneControllers
 {
@@ -22,6 +24,8 @@ namespace Controllers.SceneControllers
         private Button _rightMoveBtn;
         [SerializeField] 
         private Button _rotateBtn;
+        [SerializeField] 
+        private Button _pauseBtn;
 
         [Space(5)][Header("Views")]
         [SerializeField] 
@@ -30,6 +34,12 @@ namespace Controllers.SceneControllers
         private BoosterView _deleteBlockView;
         [SerializeField] 
         private PreviewItemView _previewItemView;
+        [SerializeField] 
+        private ScoreView _scoreView;
+        [SerializeField] 
+        private GamePanelView _resultPanelView;
+        [SerializeField] 
+        private GamePanelView _pausePanelView;
 
         private GameModel _model;
         private GameActionController _actionController;
@@ -38,6 +48,7 @@ namespace Controllers.SceneControllers
         {
             SetBoosterCount();
             CheckActiveBoosterBtns();
+            UpdateScore();
         }
 
         protected override void OnSceneStart()
@@ -61,10 +72,13 @@ namespace Controllers.SceneControllers
             _leftMoveBtn.onClick.AddListener(delegate { _boardController.MoveItem(-1); });
             _rightMoveBtn.onClick.AddListener(delegate { _boardController.MoveItem(1); });
             _rotateBtn.onClick.AddListener(_boardController.RotateItem);
+            _pauseBtn.onClick.AddListener(OpenPausePanel);
             
             _clearBoardView.PressBtnAction += ClearBoard;
             _deleteBlockView.PressBtnAction += SetCanDeleteBlock;
             _actionController.ChoseItem += SetPreviewItem;
+            _actionController.LineHasBeenDestroy += delegate { AddScore(1); };
+            _actionController.GameOver += OpenResultPanel;
         }
 
         protected override void Unsubscribe()
@@ -72,10 +86,13 @@ namespace Controllers.SceneControllers
             _leftMoveBtn.onClick.RemoveAllListeners();
             _rightMoveBtn.onClick.RemoveAllListeners();
             _rotateBtn.onClick.RemoveAllListeners();
+            _pauseBtn.onClick.RemoveAllListeners();
             
             _clearBoardView.PressBtnAction -= ClearBoard;
             _deleteBlockView.PressBtnAction -= SetCanDeleteBlock;
             _actionController.ChoseItem -= SetPreviewItem;
+            _actionController.LineHasBeenDestroy -= delegate { AddScore(1); };
+            _actionController.GameOver -= OpenResultPanel;
         }
 
         private void ClearBoard()
@@ -111,6 +128,7 @@ namespace Controllers.SceneControllers
             base.DestroyBlockBoosterCount--;
             SetBoosterCount();
             CheckActiveBoosterBtns();
+            AddScore(5);
         }
 
         private void CheckActiveBoosterBtns()
@@ -125,9 +143,69 @@ namespace Controllers.SceneControllers
             _deleteBlockView.SetCountText(base.DestroyBlockBoosterCount);
         }
 
-        private void SetPreviewItem(int index)
+        private void SetPreviewItem(int index, int countBlocks)
         {
             _previewItemView.SetSprite(index);
+            
+            AddScore(countBlocks);
+        }
+
+        private void AddScore(int index)
+        {
+            _model.UpdateScore(index);
+            
+            UpdateScore();
+        }
+
+        private void UpdateScore()
+        {
+            _scoreView.UpdateText(_model.Score);
+        }
+
+        private void OpenResultPanel()
+        {
+            _resultPanelView.SetText(_model.Score);
+            _resultPanelView.PressBtnAction += CheckAnswerResultPanel;
+            _resultPanelView.gameObject.SetActive(true);
+        }
+
+        private void OpenPausePanel()
+        {
+            Time.timeScale = 0;
+
+            _pausePanelView.PressBtnAction += CheckAnswerPausePanel;
+            _pausePanelView.gameObject.SetActive(true);
+        }
+
+        private void CheckAnswerResultPanel(int answer)
+        {
+            _resultPanelView.PressBtnAction -= CheckAnswerResultPanel;
+
+            switch (answer)
+            {
+                case 0:
+                    base.LoadScene(ScenesNames.Menu);
+                    break;
+                case 1:
+                    base.LoadScene(ScenesNames.Game);
+                    break;
+            }
+        }
+
+        private void CheckAnswerPausePanel(int answer)
+        {
+            _pausePanelView.PressBtnAction -= CheckAnswerPausePanel;
+
+            switch (answer)
+            {
+                case 0:
+                    _pausePanelView.gameObject.SetActive(false);
+                    Time.timeScale = 1;
+                    break;
+                case 1:
+                    base.LoadScene(ScenesNames.Menu);
+                    break;
+            }
         }
     }
 }

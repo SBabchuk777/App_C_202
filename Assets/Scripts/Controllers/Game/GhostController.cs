@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -76,6 +75,11 @@ namespace Controllers.Game
 
         private void Set()
         {
+            if (!_board.CanSpawnPiece)
+            {
+                return;
+            }
+
             foreach (var pieceCell in Cells)
             {
                 Vector3Int tilePos = pieceCell + Position;
