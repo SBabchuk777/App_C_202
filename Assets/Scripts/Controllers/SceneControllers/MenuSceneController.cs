@@ -1,3 +1,4 @@
+using Enums;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -27,7 +28,7 @@ namespace Controllers.SceneControllers
 
         protected override void OnSceneStart()
         {
-            
+            base.PlayMusic(base.GetAudioClip(AudioNames.MenuClip.ToString()));
         }
 
         protected override void OnSceneDisable()

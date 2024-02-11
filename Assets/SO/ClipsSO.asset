@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e81a2cda3b8a47edad946c64a97a02e, type: 3}
+  m_Name: ClipsSO
+  m_EditorClassIdentifier: 
+  _audioClips:
+  - {fileID: 8300000, guid: 79f4c14b20a8b440cb1d0b79be565703, type: 3}
+  - {fileID: 8300000, guid: 713a4ec9e94704d7da3955f7389a3196, type: 3}
+  - {fileID: 8300000, guid: feba9224389c6482cb462f372a61be4f, type: 3}
+  - {fileID: 8300000, guid: fe672fc2c3b494fcc9022e6833acf8e5, type: 3}
+  - {fileID: 8300000, guid: 44f8496adf0f64e77bf104d5c29665d5, type: 3}
+  - {fileID: 8300000, guid: 07a42c480620d440d80b526cda2f6038, type: 3}
+  - {fileID: 8300000, guid: 92b59a2ca881b4884af644891b3f4208, type: 3}
+  - {fileID: 8300000, guid: 510ab1160300e487d922e7317ec44e84, type: 3}

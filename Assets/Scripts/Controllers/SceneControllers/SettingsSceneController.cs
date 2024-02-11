@@ -1,3 +1,4 @@
+using Enums;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -30,6 +31,7 @@ namespace Controllers.SceneControllers
         {
             UpdateSoundBtnSprite();
             UpdateMusicBtnSprite();
+            base.PlayMusic(GetAudioClip(AudioNames.MenuClip.ToString()));
         }
 
         protected override void OnSceneDisable()
@@ -39,8 +41,8 @@ namespace Controllers.SceneControllers
 
         protected override void Subscribe()
         {
-            //_ppBtn.onClick.AddListener(delegate { base.SetClickClip(); });
-            //_termsBtn.onClick.AddListener(delegate { base.SetClickClip(); });
+            _ppBtn.onClick.AddListener(delegate { base.SetClickClip(); });
+            _termsBtn.onClick.AddListener(delegate { base.SetClickClip(); });
             _backBtn.onClick.AddListener(delegate { LoadScene(ScenesNames.Menu); });
 
             _soundSwitcherView.PressBtnAction += ChangeSoundState;
@@ -77,16 +79,18 @@ namespace Controllers.SceneControllers
         {
             SoundsStates.ChangeSoundsState();
             
-            //base.SetClickClip();
+            base.SetClickClip();
             
             UpdateSoundBtnSprite();
         }
 
         private void ChangeMusicState()
         {
-            //base.SetClickClip();
+            base.SetClickClip();
 
             SoundsStates.ChangeMusicState();
+            
+            base.PlayMusic(GetAudioClip(AudioNames.MenuClip.ToString()));
             
             UpdateMusicBtnSprite();
         }

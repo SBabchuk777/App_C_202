@@ -1,4 +1,5 @@
 using System.Collections;
+using Enums;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -33,7 +34,7 @@ namespace Controllers.SceneControllers
 
         protected override void OnSceneStart()
         {
-
+            base.PlayMusic(base.GetAudioClip(AudioNames.MenuClip.ToString()));
         }
 
         protected override void OnSceneDisable()
@@ -60,8 +61,8 @@ namespace Controllers.SceneControllers
 
         private void RotateWheel()
         {
-            //base.SetClickClip();
-            //base.TryPlaySound(_spinClip);
+            base.SetClickClip();
+            base.PlaySound(GetAudioClip(AudioNames.SpinClip.ToString()));
             
             _menuModel.SetLastDayOpenBonus();
 
@@ -79,10 +80,6 @@ namespace Controllers.SceneControllers
             _wheelView.WheelEndRotationAction -= SetWheelState;
 
             int prize = _bonusModel.GetPrize;
-
-            //AudioClip clip = prize > 0 ? _winClip : _loseClip;
-
-            //base.TryPlaySound(clip);
 
             if (prize > 0)
             {
@@ -106,11 +103,15 @@ namespace Controllers.SceneControllers
 
         private IEnumerator DelayCheckSpinBtnState(bool isWin, int prize)
         {
-            yield return new WaitForSecondsRealtime(2);
+            yield return new WaitForSecondsRealtime(1);
 
            OpenResultPanel(isWin, prize);
            
-           yield return new WaitForSecondsRealtime(4);
+           AudioClip clip = isWin ? GetAudioClip(AudioNames.WinClip.ToString()) : GetAudioClip(AudioNames.LoseClip.ToString());
+
+           base.PlaySound(clip);
+           
+           yield return new WaitForSecondsRealtime(3);
            
            OpenMenuScene();
         }

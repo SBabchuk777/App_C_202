@@ -6,8 +6,9 @@ using Controllers.ActionControllers.Game;
 
 using Models.Game;
 using Views.Game;
+
+using Enums;
 using Names;
-using Unity.VisualScripting;
 
 namespace Controllers.SceneControllers
 {
@@ -54,6 +55,8 @@ namespace Controllers.SceneControllers
         protected override void OnSceneStart()
         {
             _boardController.StartGame(_actionController);
+            
+            base.PlayMusic(GetAudioClip(AudioNames.GameClip.ToString()));
         }
 
         protected override void OnSceneDisable()
@@ -69,9 +72,9 @@ namespace Controllers.SceneControllers
 
         protected override void Subscribe()
         {
-            _leftMoveBtn.onClick.AddListener(delegate { _boardController.MoveItem(-1); });
-            _rightMoveBtn.onClick.AddListener(delegate { _boardController.MoveItem(1); });
-            _rotateBtn.onClick.AddListener(_boardController.RotateItem);
+            _leftMoveBtn.onClick.AddListener(SetLeftMoveItem);
+            _rightMoveBtn.onClick.AddListener(SetRightMoveItem);
+            _rotateBtn.onClick.AddListener(SetRotationItem);
             _pauseBtn.onClick.AddListener(OpenPausePanel);
             
             _clearBoardView.PressBtnAction += ClearBoard;
@@ -97,6 +100,9 @@ namespace Controllers.SceneControllers
 
         private void ClearBoard()
         {
+            base.SetClickClip();
+            base.PlaySound(GetAudioClip(AudioNames.DeleteLine.ToString()));
+            
             _boardController.ClearBoard();
 
             base.ClearBoardBoosterCount--;
@@ -107,6 +113,8 @@ namespace Controllers.SceneControllers
 
         private void SetCanDeleteBlock()
         {
+            SetClickClip();
+
             _boardController.CanDeleteBlock = true;
 
             _actionController.BlockHasBeenDestroy += UpdateCountDeleteBlockBooster;
@@ -125,6 +133,8 @@ namespace Controllers.SceneControllers
                 return;
             }
 
+            base.PlaySound(GetAudioClip(AudioNames.DeleteLine.ToString()));
+            
             base.DestroyBlockBoosterCount--;
             SetBoosterCount();
             CheckActiveBoosterBtns();
@@ -152,6 +162,11 @@ namespace Controllers.SceneControllers
 
         private void AddScore(int index)
         {
+            if (index == 1)
+            {
+                base.PlaySound(GetAudioClip(AudioNames.DeleteLine.ToString()));
+            }
+
             _model.UpdateScore(index);
             
             UpdateScore();
@@ -171,6 +186,8 @@ namespace Controllers.SceneControllers
 
         private void OpenPausePanel()
         {
+            base.SetClickClip();
+            
             Time.timeScale = 0;
 
             _pausePanelView.PressBtnAction += CheckAnswerPausePanel;
@@ -199,6 +216,8 @@ namespace Controllers.SceneControllers
             switch (answer)
             {
                 case 0:
+                    base.SetClickClip();
+                    
                     _pausePanelView.gameObject.SetActive(false);
                     Time.timeScale = 1;
                     break;
@@ -206,6 +225,25 @@ namespace Controllers.SceneControllers
                     base.LoadScene(ScenesNames.Menu);
                     break;
             }
+        }
+
+        private void SetLeftMoveItem()
+        {
+            base.SetClickClip();
+            _boardController.MoveItem(-1);
+        }
+        
+        private void SetRightMoveItem()
+        {
+            base.SetClickClip();
+            _boardController.MoveItem(1);
+        }
+
+        private void SetRotationItem()
+        {
+            base.SetClickClip();
+
+            _boardController.RotateItem();
         }
     }
 }

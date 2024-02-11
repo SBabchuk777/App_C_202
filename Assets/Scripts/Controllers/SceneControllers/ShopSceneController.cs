@@ -4,7 +4,9 @@ using UnityEngine.UI;
 using Views.Shop;
 using Models;
 using Models.Values;
+
 using Names;
+using Enums;
 
 namespace Controllers.SceneControllers
 {
@@ -32,7 +34,7 @@ namespace Controllers.SceneControllers
 
         protected override void OnSceneStart()
         {
-            
+            base.PlayMusic(GetAudioClip(AudioNames.MenuClip.ToString()));
         }
 
         protected override void OnSceneDisable()
@@ -65,6 +67,8 @@ namespace Controllers.SceneControllers
         {
             _currentBoosterIndex = index;
             
+            base.SetClickClip();
+            
             OpenConfirmPanel();
         }
 
@@ -82,6 +86,8 @@ namespace Controllers.SceneControllers
 
         private void CheckAnswerConfirmPanel(int answer)
         {
+            base.SetClickClip();
+            
             _panelView.PressBtnAction -= CheckAnswerConfirmPanel;
             _panelView.gameObject.SetActive(false);
 
@@ -101,6 +107,7 @@ namespace Controllers.SceneControllers
                 Wallet.TryPurchase(_model.SecondBoosterCost);
             }
             
+            base.PlaySound(GetAudioClip(AudioNames.BuyClip.ToString()));
             CheckActiveBuyBtns();
             base.UpdateMoneyCountText();
         }

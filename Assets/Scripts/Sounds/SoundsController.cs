@@ -8,8 +8,13 @@ namespace Sounds
         [SerializeField] 
         private List<AudioSource> _audioSources;
 
-        public void PlaySound(AudioClip clip)
+        public void TryPlaySound(AudioClip clip)
         {
+            if (!SoundsStates.CanPlaySound)
+            {
+                return;
+            }
+
             int index = _audioSources[0].isPlaying ? 1 : 0;
 
             _audioSources[index].clip = clip;

@@ -11,14 +11,21 @@ namespace Sounds
             DontDestroyOnLoad(transform.gameObject);
         }
 
-        public void PlayMusic(AudioClip clip)
+        public void TryPlayMusic(AudioClip clip)
         {
+            if (!SoundsStates.CanPlayMusic)
+            {
+                StopMusic();
+                return;
+            }
+
             if (_musicSource.isPlaying && _musicSource.clip == clip)
             {
                 return;
             }
             
             StopMusic();
+
             _musicSource.clip = clip;
             _musicSource.Play();
         }
