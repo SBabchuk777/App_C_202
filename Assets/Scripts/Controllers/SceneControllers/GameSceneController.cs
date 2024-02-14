@@ -80,7 +80,7 @@ namespace Controllers.SceneControllers
             _clearBoardView.PressBtnAction += ClearBoard;
             _deleteBlockView.PressBtnAction += SetCanDeleteBlock;
             _actionController.ChoseItem += SetPreviewItem;
-            _actionController.LineHasBeenDestroy += delegate { AddScore(1); };
+            _actionController.LineHasBeenDestroy += delegate { AddScore(0); };
             _actionController.GameOver += OpenResultPanel;
         }
 
@@ -94,7 +94,7 @@ namespace Controllers.SceneControllers
             _clearBoardView.PressBtnAction -= ClearBoard;
             _deleteBlockView.PressBtnAction -= SetCanDeleteBlock;
             _actionController.ChoseItem -= SetPreviewItem;
-            _actionController.LineHasBeenDestroy -= delegate { AddScore(1); };
+            _actionController.LineHasBeenDestroy -= delegate { AddScore(0); };
             _actionController.GameOver -= OpenResultPanel;
         }
 
@@ -104,6 +104,8 @@ namespace Controllers.SceneControllers
             base.PlaySound(GetAudioClip(AudioNames.DeleteLine.ToString()));
             
             _boardController.ClearBoard();
+            
+            AddScore(3);
 
             base.ClearBoardBoosterCount--;
             
@@ -138,7 +140,7 @@ namespace Controllers.SceneControllers
             base.DestroyBlockBoosterCount--;
             SetBoosterCount();
             CheckActiveBoosterBtns();
-            AddScore(5);
+            AddScore(1);
         }
 
         private void CheckActiveBoosterBtns()
@@ -153,16 +155,21 @@ namespace Controllers.SceneControllers
             _deleteBlockView.SetCountText(base.DestroyBlockBoosterCount);
         }
 
-        private void SetPreviewItem(int index, int countBlocks)
+        private void SetPreviewItem(int index, bool isFirstTime)
         {
             _previewItemView.SetSprite(index);
-            
-            AddScore(countBlocks);
+
+            if (isFirstTime)
+            {
+                return;
+            }
+
+            AddScore(2);
         }
 
         private void AddScore(int index)
         {
-            if (index == 1)
+            if (index == 0)
             {
                 base.PlaySound(GetAudioClip(AudioNames.DeleteLine.ToString()));
             }

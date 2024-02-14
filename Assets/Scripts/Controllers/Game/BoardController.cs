@@ -144,7 +144,7 @@ namespace Controllers.Game
                 _mainTileMap.SetTile(tilePos, null);
             }
         }
-        
+
         public void SpawnPiece()
         {
             if (!_canSpawnPiece)
@@ -155,14 +155,12 @@ namespace Controllers.Game
             int randomIndex = Random.Range(0, _tetrominoes.Length);
             TetrominoData data = _tetrominoes[randomIndex];
             
-            int countBlocks = _isFirstTime ? 3 : 2;
+            _actionController.ChoseItem.Invoke(randomIndex, _isFirstTime);
 
             if (_isFirstTime)
             {
                 _isFirstTime = false;
             }
-
-            _actionController.ChoseItem.Invoke(randomIndex, countBlocks);
 
             _activePiece.Initialize(this, _spawnPosition, data);
 
