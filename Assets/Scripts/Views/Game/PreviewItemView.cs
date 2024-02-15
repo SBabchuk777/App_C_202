@@ -14,8 +14,6 @@ namespace Views.Game
 
         public void SetSprite(int index)
         {
-            Debug.Log(index);
-            
             _mainImage.sprite = _sprites[index];
             _mainImage.SetNativeSize();
 
