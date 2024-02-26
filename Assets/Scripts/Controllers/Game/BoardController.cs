@@ -24,6 +24,8 @@ namespace Controllers.Game
         public bool CanDeleteBlock { get; set; }
         public bool CanSpawnPiece => _canSpawnPiece;
 
+        private TetrominoData _nextTetrominoData;
+
         private RectInt Bounds
         {
             get
@@ -152,17 +154,13 @@ namespace Controllers.Game
                 return;
             }
 
-            int randomIndex = Random.Range(0, _tetrominoes.Length);
-            TetrominoData data = _tetrominoes[randomIndex];
-            
-            _actionController.ChoseItem.Invoke(randomIndex, _isFirstTime);
-
             if (_isFirstTime)
             {
-                _isFirstTime = false;
+                int random = Random.Range(0, _tetrominoes.Length);
+                _nextTetrominoData = _tetrominoes[random];
             }
 
-            _activePiece.Initialize(this, _spawnPosition, data);
+            _activePiece.Initialize(this, _spawnPosition, _nextTetrominoData);
 
             if (IsValidPosition(_activePiece, _spawnPosition))
             {
@@ -171,6 +169,17 @@ namespace Controllers.Game
             else
             {
                 GameOver();
+            }
+
+            int randomIndex = Random.Range(0, _tetrominoes.Length);
+
+            _nextTetrominoData = _tetrominoes[randomIndex];
+            
+            _actionController.ChoseItem.Invoke(randomIndex, _isFirstTime);
+
+            if (_isFirstTime)
+            {
+                _isFirstTime = false;
             }
         }
         

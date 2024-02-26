@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -127,11 +128,10 @@ namespace Controllers.SceneControllers
         private void UpdateCountDeleteBlockBooster(bool blockHasBeenDeleted)
         {
             _actionController.BlockHasBeenDestroy -= UpdateCountDeleteBlockBooster;
-            
-            _deleteBlockView.SetInteractableBtn(true);
 
             if (!blockHasBeenDeleted)
             {
+                StartCoroutine(DelayActiveBoosterBtn());
                 return;
             }
 
@@ -251,6 +251,13 @@ namespace Controllers.SceneControllers
             base.SetClickClip();
 
             _boardController.RotateItem();
+        }
+
+        private IEnumerator DelayActiveBoosterBtn()
+        {
+            yield return new WaitForSeconds(0.3f);
+            
+            _deleteBlockView.SetInteractableBtn(true);
         }
     }
 }
